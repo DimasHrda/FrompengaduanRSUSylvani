@@ -363,19 +363,22 @@
         </div>
 
         <div class="form-group">
-          <label for="kategori">Kategori Pengaduan</label>
+  <label for="jenis_pengaduan">Kategori Pengaduan</label>
 
-          <select id="kategori" name="kategori" required>
-            <option value="">-- Pilih Kategori --</option>
-            <option value="Pelayanan Medis">Pelayanan Medis</option>
-            <option value="Pelayanan Keperawatan">Pelayanan Keperawatan</option>
-            <option value="Fasilitas">Fasilitas</option>
-            <option value="Administrasi">Administrasi</option>
-            <option value="Kebersihan">Kebersihan</option>
-            <option value="Farmasi">Farmasi</option>
-            <option value="Lainnya">Lainnya</option>
-          </select>
-        </div>
+  <select id="jenis_pengaduan" required>
+    <option value="">-- Pilih Kategori --</option>
+    <option value="Medis">Medis</option>
+    <option value="Non Medis">Non Medis</option>
+  </select>
+</div>
+
+<div class="form-group" id="kategori_detail_group" style="display: none;">
+  <label for="kategori">Jenis Pengaduan</label>
+
+  <select id="kategori" name="kategori" required>
+    <option value="">-- Pilih Jenis Pengaduan --</option>
+  </select>
+</div>
 
         <div class="form-group">
           <label for="pesan">Isi Pengaduan</label>
@@ -464,6 +467,58 @@
     } else {
       console.error('EmailJS SDK tidak berhasil dimuat.');
     }
+
+    const jenisPengaduan = document.getElementById("jenis_pengaduan");
+const kategori = document.getElementById("kategori");
+const kategoriGroup = document.getElementById("kategori_detail_group");
+
+const pilihanKategori = {
+  "Medis": [
+    "Pelayanan Medis",
+    "Pelayanan Keperawatan",
+    "UGD",
+    "POLI",
+    "Ruangan Lantai 2",
+    "Ruangan Lantai 3",
+    "Ruangan Lantai 4",
+    "Ruangan Lantai 5",
+    "Ruang Operasi",
+    "Ruang Bersalin",
+    "Farmasi",
+    "Laboraturium",
+    "Radiologi"
+  ],
+  "Non Medis": [
+    "Resepsionis",
+    "Administrasi",
+    "Fasilitas",
+    "Kebersihan",
+    "Lainnya"
+  ]
+};
+
+jenisPengaduan.addEventListener("change", function () {
+  const pilihan = this.value;
+
+  // Kosongkan pilihan sebelumnya
+  kategori.innerHTML =
+    '<option value="">-- Pilih Jenis Pengaduan --</option>';
+
+  if (pilihan && pilihanKategori[pilihan]) {
+    pilihanKategori[pilihan].forEach(function (item) {
+      const option = document.createElement("option");
+      option.value = item;
+      option.textContent = item;
+      kategori.appendChild(option);
+    });
+
+    kategoriGroup.style.display = "block";
+    kategori.disabled = false;
+  } else {
+    kategoriGroup.style.display = "none";
+    kategori.disabled = true;
+  }
+});
 
     // ============================================
     // FUNGSI MENAMPILKAN STATUS
